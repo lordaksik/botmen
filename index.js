@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api')
 const fetch = require('node-fetch');
 
 var cron = require('node-cron');
-const token='BOT_TOKEN'
+const token='process.env.BOT_TOKEN'
 const bot =new TelegramBot(token,{
     polling: {interval:3,
         autoStart:true,
