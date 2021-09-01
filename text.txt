@@ -1,0 +1,191 @@
+let score_dealer= null;
+let score_player= null;
+let result;
+let result2;
+let result3;
+let time=3600000;
+let games,trade;
+let games2,trade2;
+let games3,trade3,trade4;
+process.env.NTBA_FIX_319 = 1;
+const TelegramBot = require('node-telegram-bot-api')
+const fetch = require('node-fetch');
+var sleep = require('system-sleep');
+var cron = require('node-cron');
+const token='1514288822:AAEuvp-41i45fYLL4tuGW5M4_QfZp2JRpqI'
+const bot =new TelegramBot(token,{
+    polling: {interval:3,
+        autoStart:true,
+        params:{
+            timeout:1
+        }
+    }
+            
+});
+request()
+bot.getMe().then(function(me)
+{
+    console.log('Hello! My name is %s!', me.first_name);
+    console.log('My id is %s.', me.id);
+    console.log('And my username is @%s.', me.username);
+   
+});
+
+bot.on('text', function(msg)
+{
+    var messageChatId = msg.chat.id;
+    var messageText = msg.text;
+    var messageDate = msg.date;
+    var messageUsr = msg.from.username;
+        function reskef(){
+        request()
+        trade=global.games;
+        trade2=global.games2;
+        trade3=global.games3;
+        trade4=global.games4;
+        console.log(trade+' '+trade2+' '+trade3+' '+trade4);
+        if(trade==3) {
+        sendMessageByBot(messageChatId, "6 карт больше 8");
+        // пауза 5 минут если это 
+        }  
+            
+    }
+    function reskef2(){
+        request()
+        trade=global.games;
+        trade2=global.games2;
+        trade3=global.games3;
+        trade4=global.games4;
+        console.log(trade+' '+trade2+' '+trade3+' '+trade4);   
+        if(trade2==3) {
+            sendMessageByBot(messageChatId, "6 карт меньше 8");
+            } 
+           
+        }
+            function reskef3(){
+                request()
+                trade=global.games;
+                trade2=global.games2;
+                trade3=global.games3;
+                trade4=global.games4;
+                console.log(trade+' '+trade2+' '+trade3+' '+trade4);
+                    if(trade3==6) {
+                        sendMessageByBot(messageChatId, "6 карт игрока меньше 8");
+                        }
+                
+            } 
+            function reskef4(){
+                request()
+                trade=global.games;
+                trade2=global.games2;
+                trade3=global.games3;
+                trade4=global.games4;
+                console.log(trade+' '+trade2+' '+trade3+' '+trade4);
+                        if(trade4==6) {
+                            sendMessageByBot(messageChatId, "6 карт игрока больше 8");
+                            }
+            }
+    
+    if (messageText === '/start') {
+        sendMessageByBot(messageChatId, "Вы запустили Бота на стратегию «Ниже/Выше 8» ⚠ Не забудьте поставить особые уведомления на Бота, и ждите сигнала на валуйные ситуации!");
+        sendMessageByBot(messageChatId,"Удачи! По всем вопросам пишите @BetgamesTV_Admin");       
+        setTimeout(reskef,1000)
+            setInterval(reskef,30000)
+            setInterval(reskef2,30000)
+            setInterval(reskef3,30000)
+            setInterval(reskef4,30000)
+    }
+ 
+    console.log(msg);
+});
+ 
+function sendMessageByBot(aChatId, aMessage)
+{
+    bot.sendMessage(aChatId, aMessage, { caption: 'I\'m a cute bot!' });
+}
+//setInterval(request2, 30000);
+async function request(){
+    const response = await fetch("https://betgames9.betgames.tv/web/v2/games/results/testpartner/en/0/2020-30-09/8/1/")
+    const data = await response.json()
+    let result=0;
+    let result2=0;
+    let result3=0;
+    let result4=0;
+    score_dealer =data.items.results[0].results.score_dealer
+	
+    for(let i=0; i<=2;i++){
+        score_dealer =data.items.results[i].results.score_dealer
+        score_player =data.items.results[i].results.score_player
+       // console.log("игрок " + score_player + " "+ score_dealer +" дилер")
+       if((score_player>8)&&(score_dealer>8))
+                result=result+1;	 
+        }
+
+    global.games=result;
+    for(let i=0; i<=2;i++){
+        score_dealer =data.items.results[i].results.score_dealer
+        score_player =data.items.results[i].results.score_player
+       // console.log("игрок " + score_player + " "+ score_dealer +" дилер")
+       if((score_player<8)&&(score_dealer<8))
+                result2=result2+1;	 
+        }
+
+    global.games2=result2;
+    for(let i=0; i<=5;i++){
+        score_dealer =data.items.results[i].results.score_dealer
+        score_player =data.items.results[i].results.score_player
+       // console.log("игрок " + score_player + " "+ score_dealer +" дилер")
+       if(score_player<8)
+                result3=result3+1;	 
+        }
+
+    global.games3=result3;
+
+for(let i=0; i<=5;i++){
+    score_dealer =data.items.results[i].results.score_dealer
+    score_player =data.items.results[i].results.score_player
+   // console.log("игрок " + score_player + " "+ score_dealer +" дилер")
+   if(score_player>8)
+            result4=result4+1;	 
+    }
+
+global.games4=result4;
+}
+ 
+async function request2(){
+    const response = await fetch("https://betgames9.betgames.tv/web/v2/games/results/testpartner/en/0/2020-30-09/8/1/")
+    const data = await response.json()
+    let result=0; let result2=0;
+    let result3=0; 
+    for(let i=0; i<=19;i++){
+    score_dealer =data.items.results[i].results.score_dealer
+    score_player =data.items.results[i].results.score_player
+   
+   console.log("игрок " + score_player + " "+ score_dealer +" дилер")
+         if((score_player==3 && (score_dealer==2 || score_dealer==8 || score_dealer==3)) ||(score_player==13 && (score_dealer==13 ||score_dealer==8 || score_dealer==14))||(score_player==score_dealer)||(score_player==8)||(score_dealer==8))
+            result=result+1;	 
+    }
+    if(result==0) 
+       alert('Большие кэфы');
+
+    for(let i=0; i<=19;i++){
+    score_dealer =data.items.results[i].results.score_dealer
+    score_player =data.items.results[i].results.score_player
+   
+   
+         if((score_player==8)||(score_dealer==8))
+            result2=result2+1;	 
+    }
+    if(result2==0) 
+       alert('Не было 8');
+   else alerd('была 8');
+    for(let i=0; i<=29;i++){
+    score_dealer =data.items.results[i].results.score_dealer
+    score_player =data.items.results[i].results.score_player
+   
+         if(score_player==score_dealer)
+            result3=result3+1;	 
+    }
+    if(result3==0) 
+       alert('Не было ничьи');
+    }
